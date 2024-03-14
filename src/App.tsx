@@ -2,6 +2,7 @@ import { Layout } from 'antd'
 import { Header, Content } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import './index.css'
+import NavBar from './components/NavBar'
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
         style={{
           backgroundColor: 'orange'
         }}>
-        Header
+        <NavBar />
       </Header>
       <Layout>
         <Sider
