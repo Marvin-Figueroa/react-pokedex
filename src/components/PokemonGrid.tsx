@@ -1,29 +1,10 @@
-import { useEffect, useState } from 'react'
-import apiClient from '../services/apiClient'
 import { Typography } from 'antd'
-
-interface Pokemon {
-  id: number
-  name: string
-}
-
-interface FetchPokemonsResponse {
-  count: number
-  results: Pokemon[]
-}
+import usePokemons from '../hooks/usePokemons'
 
 const { Text } = Typography
 
 const PokemonGrid = () => {
-  const [pokemons, setPokemons] = useState<Pokemon[]>([])
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    apiClient
-      .get<FetchPokemonsResponse>('/xpokemon')
-      .then((response) => setPokemons(response.data.results))
-      .catch((error) => setError(error.message))
-  }, [])
+  const { pokemons, error } = usePokemons()
 
   return (
     <>
