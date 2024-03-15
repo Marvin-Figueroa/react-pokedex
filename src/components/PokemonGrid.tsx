@@ -1,5 +1,6 @@
-import { Typography } from 'antd'
+import { Col, Row, Typography } from 'antd'
 import usePokemons from '../hooks/usePokemons'
+import PokemonCard from './PokemonCard'
 
 const { Text } = Typography
 
@@ -9,11 +10,13 @@ const PokemonGrid = () => {
   return (
     <>
       {error && <Text type='danger'>{error}</Text>}
-      <ul>
+      <Row gutter={[15, 15]}>
         {pokemons.map((pokemon) => (
-          <li key={pokemon.id}>{pokemon.name}</li>
+          <Col xs={24} sm={24} md={12} lg={8} xl={6}>
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          </Col>
         ))}
-      </ul>
+      </Row>
     </>
   )
 }

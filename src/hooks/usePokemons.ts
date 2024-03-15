@@ -1,16 +1,47 @@
 import { useEffect, useState } from "react"
 import apiClient from "../services/apiClient"
-import { CanceledError } from "axios"
+import axios, { CanceledError } from "axios"
 
-interface Pokemon {
-  id: number
-  name: string
+export interface ItemResource {
+  name: string;
+  url: string;
+}
+
+export interface Pokemon {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  sprites: {"other": {"official-artwork": {"front_default": string}}};
+  types: [{slot: number, type: ItemResource}]
+
 }
 
 interface FetchPokemonsResponse {
   count: number
-  results: Pokemon[]
+  results: ItemResource[]
 }
+
+const fetchPokemonDetails = async () => {
+  const response = await apiClient.get<FetchPokemonsResponse>('/pokemon');
+
+  const pokemonList = response.data.results;
+
+  const pokemonDetailsPromises = pokemonList.map(async (pokemon) => {
+    const {
+      id, name, height, weight, sprites, types
+     } = (await axios.get<Pokemon>(pokemon.url)).data;
+
+    return ({
+      id, name, height, weight, sprites, types
+     });
+  });
+
+  const pokemonDetails = await Promise.all(pokemonDetailsPromises);
+
+  return pokemonDetails;
+};
+
 
 const usePokemons = () => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
@@ -20,16 +51,16 @@ const usePokemons = () => {
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true)
-    apiClient
-      .get<FetchPokemonsResponse>('/pokemon', {signal: controller.signal})
-      .then((response) => setPokemons(response.data.results))
-      .catch((error) => {
-        if(error instanceof CanceledError) return;
-        setError(error.message)
-      })
-      .finally(() => setLoading(false))
+    
+    fetchPokemonDetails()
+    .then(data => setPokemons(data))
+    .catch(error => {
+      if(error instanceof CanceledError) return;
+      setError(error.message)
+    })
+    .finally(() => setLoading(false));
 
-      return () => controller.abort()
+    return () => controller.abort()
   }, [])
 
   return {pokemons, error, loading}
