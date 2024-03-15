@@ -7,13 +7,18 @@ export interface ItemResource {
   url: string;
 }
 
+export interface PokemonType {
+  slot: number;
+  type: ItemResource
+}
+
 export interface Pokemon {
   id: number;
   name: string;
   height: number;
   weight: number;
   sprites: {"other": {"official-artwork": {"front_default": string}}};
-  types: [{slot: number, type: ItemResource}]
+  types: PokemonType[]
 
 }
 

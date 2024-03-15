@@ -1,25 +1,38 @@
-import { Card, Typography } from 'antd'
+import { Card } from 'antd'
 import { Pokemon } from '../hooks/usePokemons'
+import PokemonTypeIconList from './PokemonTypeIconList'
+import Meta from 'antd/es/card/Meta'
 
 interface Props {
   pokemon: Pokemon
 }
 
-const { Title } = Typography
-
 const PokemonCard = ({ pokemon }: Props) => {
   return (
     <Card
-      hoverable
+      size='small'
       cover={
         <img
           alt={pokemon.name}
           src={pokemon.sprites.other['official-artwork'].front_default}
         />
       }>
-      <Title level={4}>
-        {pokemon.name[0].toUpperCase() + pokemon.name.substring(1)}
-      </Title>
+      <Meta
+        title={pokemon.name[0].toUpperCase() + pokemon.name.substring(1)}
+        description={
+          <>
+            <p>
+              <strong>Height: </strong>
+              <span>{pokemon.height / 10} m</span>
+            </p>
+            <p>
+              <strong>Weight: </strong>
+              <span>{pokemon.weight / 10} kg</span>
+            </p>
+          </>
+        }
+      />
+      <PokemonTypeIconList types={pokemon.types} />
     </Card>
   )
 }
