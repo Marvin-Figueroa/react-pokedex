@@ -4,6 +4,7 @@ import Sider from 'antd/es/layout/Sider'
 import './index.css'
 import NavBar from './components/NavBar'
 import { useState } from 'react'
+import PokemonGrid from './components/PokemonGrid'
 
 const { defaultAlgorithm, darkAlgorithm } = theme
 
@@ -41,7 +42,7 @@ function App() {
             style={{
               backgroundColor: 'gold'
             }}>
-            Content
+            <PokemonGrid />
           </Content>
         </Layout>
       </Layout>
