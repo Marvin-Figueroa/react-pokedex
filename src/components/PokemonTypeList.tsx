@@ -1,14 +1,29 @@
-import usePokemonTypes from '../hooks/usePokemonTypes'
+import { Avatar, List } from 'antd'
+import pokemonTypes from '../data/pokemonTypes'
 
 const PokemonTypeList = () => {
-  const { data } = usePokemonTypes()
-
   return (
-    <ul>
-      {data.map((type) => (
-        <li key={type.name}>{type.name}</li>
-      ))}
-    </ul>
+    <List
+      itemLayout='horizontal'
+      dataSource={pokemonTypes}
+      renderItem={(item) => (
+        <List.Item key={item.id}>
+          <List.Item.Meta
+            style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+              justifyContent: 'center'
+            }}
+            avatar={<Avatar src={item.image} />}
+            title={
+              <a href='#'>
+                {item.name[0].toUpperCase() + item.name.substring(1)}
+              </a>
+            }
+          />
+        </List.Item>
+      )}
+    />
   )
 }
 

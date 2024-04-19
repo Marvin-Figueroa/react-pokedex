@@ -33,16 +33,14 @@ function App() {
             breakpoint='sm'
             collapsedWidth='0'
             trigger={null}
-            width='25%'
+            width='15%'
             style={{
-              backgroundColor: 'dodgerblue'
+              padding: '20px',
+              backgroundColor: isDarkMode ? 'currentcolor' : '#fff'
             }}>
             <PokemonTypeList />
           </Sider>
-          <Content
-            style={{
-              backgroundColor: 'gold'
-            }}>
+          <Content>
             <PokemonGrid />
           </Content>
         </Layout>
