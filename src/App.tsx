@@ -5,6 +5,7 @@ import './index.css'
 import NavBar from './components/NavBar'
 import { useState } from 'react'
 import PokemonGrid from './components/PokemonGrid'
+import PokemonTypeList from './components/PokemonTypeList'
 
 const { defaultAlgorithm, darkAlgorithm } = theme
 
@@ -36,7 +37,7 @@ function App() {
             style={{
               backgroundColor: 'dodgerblue'
             }}>
-            Sider
+            <PokemonTypeList />
           </Sider>
           <Content
             style={{
