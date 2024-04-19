@@ -1,12 +1,12 @@
 import usePokemonTypes from '../hooks/usePokemonTypes'
 
 const PokemonTypeList = () => {
-  const { pokemonTypes } = usePokemonTypes()
+  const { data } = usePokemonTypes()
 
   return (
     <ul>
-      {pokemonTypes.map((pokemonType) => (
-        <li key={pokemonType.name}>{pokemonType.name}</li>
+      {data.map((type) => (
+        <li key={type.name}>{type.name}</li>
       ))}
     </ul>
   )
