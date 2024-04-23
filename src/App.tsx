@@ -7,6 +7,8 @@ import { useState } from 'react'
 import PokemonGrid from './components/PokemonGrid'
 import PokemonTypeList from './components/PokemonTypeList'
 import { PokemonType } from './hooks/usePokemons'
+import HabitatSelector from './components/HabitatSelector'
+import pokemonHabitats, { PokemonHabitat } from './data/pokemonHabitats'
 
 const { defaultAlgorithm, darkAlgorithm } = theme
 
@@ -14,6 +16,8 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [selectedPokemonType, setSelectedPokemonType] =
     useState<PokemonType | null>(null)
+  const [selectedPokemonHabitat, setSelectedPokemonHabitat] =
+    useState<PokemonHabitat | null>(null)
 
   const handleToggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
@@ -47,6 +51,10 @@ function App() {
             />
           </Sider>
           <Content style={{ padding: '20px' }}>
+            <HabitatSelector
+              onHabitatSelect={(habitat) => setSelectedPokemonHabitat(habitat)}
+              options={pokemonHabitats}
+            />
             <PokemonGrid selectedPokemonType={selectedPokemonType} />
           </Content>
         </Layout>
