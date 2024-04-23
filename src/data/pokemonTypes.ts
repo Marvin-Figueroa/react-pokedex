@@ -16,6 +16,7 @@ import psychic from '../assets/psychic.svg'
 import rock from '../assets/rock.svg'
 import steel from '../assets/steel.svg'
 import water from '../assets/water.svg'
+import { PokemonType } from '../hooks/usePokemons'
 
 export default [
   {id: 1, name: 'normal', image: normal},
@@ -36,4 +37,4 @@ export default [
   {id: 16, name: 'dragon', image: dragon},
   {id: 17, name: 'dark', image: dark},
   {id: 18, name: 'fairy', image: fairy}
-];
+] as PokemonType[];

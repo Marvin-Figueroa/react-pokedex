@@ -6,11 +6,14 @@ import NavBar from './components/NavBar'
 import { useState } from 'react'
 import PokemonGrid from './components/PokemonGrid'
 import PokemonTypeList from './components/PokemonTypeList'
+import { PokemonType } from './hooks/usePokemons'
 
 const { defaultAlgorithm, darkAlgorithm } = theme
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [selectedPokemonType, setSelectedPokemonType] =
+    useState<PokemonType | null>(null)
 
   const handleToggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
@@ -38,10 +41,12 @@ function App() {
               padding: '20px',
               backgroundColor: isDarkMode ? 'currentcolor' : '#fff'
             }}>
-            <PokemonTypeList />
+            <PokemonTypeList
+              onSelectType={(type) => setSelectedPokemonType(type)}
+            />
           </Sider>
-          <Content>
-            <PokemonGrid />
+          <Content style={{ padding: '20px' }}>
+            <PokemonGrid selectedPokemonType={selectedPokemonType} />
           </Content>
         </Layout>
       </Layout>

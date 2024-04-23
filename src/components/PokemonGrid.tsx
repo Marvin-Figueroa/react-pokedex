@@ -1,12 +1,16 @@
 import { Col, Row, Typography } from 'antd'
-import usePokemons from '../hooks/usePokemons'
+import usePokemons, { PokemonType } from '../hooks/usePokemons'
 import PokemonCard from './PokemonCard'
 import PokemonCardSkeleton from './PokemonCardSkeleton'
 
 const { Text } = Typography
 
-const PokemonGrid = () => {
-  const { pokemons, error, loading } = usePokemons()
+interface Props {
+  selectedPokemonType: PokemonType | null
+}
+
+const PokemonGrid = ({ selectedPokemonType }: Props) => {
+  const { pokemons, error, loading } = usePokemons(selectedPokemonType)
 
   return (
     <>

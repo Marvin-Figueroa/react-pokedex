@@ -1,7 +1,12 @@
-import { Avatar, List } from 'antd'
+import { Avatar, Button, List } from 'antd'
 import pokemonTypes from '../data/pokemonTypes'
+import { PokemonType } from '../hooks/usePokemons'
 
-const PokemonTypeList = () => {
+interface Props {
+  onSelectType: (type: PokemonType) => void
+}
+
+const PokemonTypeList = ({ onSelectType }: Props) => {
   return (
     <List
       itemLayout='horizontal'
@@ -11,14 +16,17 @@ const PokemonTypeList = () => {
           <List.Item.Meta
             style={{
               display: 'flex',
-              alignItems: 'flex-end',
+              alignItems: 'center',
               justifyContent: 'center'
             }}
             avatar={<Avatar src={item.image} />}
             title={
-              <a href='#'>
+              <Button
+                onClick={() => onSelectType(item)}
+                type='link'
+                style={{ paddingTop: '8px' }}>
                 {item.name[0].toUpperCase() + item.name.substring(1)}
-              </a>
+              </Button>
             }
           />
         </List.Item>

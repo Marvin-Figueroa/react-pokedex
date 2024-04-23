@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react"
 import apiClient from "../services/apiClient"
-import axios, { CanceledError } from "axios"
+import { CanceledError } from "axios"
 
 export interface ItemResource {
   name: string;
   url: string;
 }
 
-export interface PokemonType {
+export interface PokemonTypeResource {
   slot: number;
   type: ItemResource
+}
+
+export interface PokemonType {
+  id: number;
+  name: string;
+  image: string;
 }
 
 export interface Pokemon {
@@ -18,7 +24,7 @@ export interface Pokemon {
   height: number;
   weight: number;
   sprites: {"other": {"official-artwork": {"front_default": string}}};
-  types: PokemonType[]
+  types: PokemonTypeResource[]
 
 }
 
@@ -27,15 +33,22 @@ interface FetchPokemonsResponse {
   results: ItemResource[]
 }
 
-const fetchPokemonDetails = async () => {
-  const response = await apiClient.get<FetchPokemonsResponse>('/pokemon');
+interface PokemonsByTypeResource{
+  pokemon: ItemResource;
+  slot: number
+}
 
-  const pokemonList = response.data.results;
+interface FetchPokemonsByTypeResponse {
+  pokemon: PokemonsByTypeResource[]
+}
 
-  const pokemonDetailsPromises = pokemonList.map(async (pokemon) => {
+
+export const fetchPokemonDetails = async (pokemons: ItemResource[], limit: number = 10) => {
+
+  const pokemonDetailsPromises = pokemons.slice(0, limit).map(async (pokemon) => {
     const {
       id, name, height, weight, sprites, types
-     } = (await axios.get<Pokemon>(pokemon.url)).data;
+     } = (await apiClient.get<Pokemon>(pokemon.url)).data;
 
     return ({
       id, name, height, weight, sprites, types
@@ -48,27 +61,34 @@ const fetchPokemonDetails = async () => {
 };
 
 
-const usePokemons = () => {
+const usePokemons = (type?: PokemonType | null) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    let response;
     const controller = new AbortController();
     setLoading(true)
+
+    if(type) {
+      response = apiClient.get<FetchPokemonsByTypeResponse>(`/type/${type.id}`).then(res => res.data.pokemon.map(item => item.pokemon)).then(res => fetchPokemonDetails(res))
+    }else{
+      response = apiClient.get<FetchPokemonsResponse>('/pokemon').then(res => fetchPokemonDetails(res.data.results));
+    }
     
-    fetchPokemonDetails()
-    .then(data => setPokemons(data))
+    response.then(data => {setPokemons(data)})
     .catch(error => {
       if(error instanceof CanceledError) return;
       setError(error.message)
     })
     .finally(() => setLoading(false));
 
-    return () => controller.abort()
-  }, [])
+    return () => controller.abort();
+  
+  }, [type]);
 
-  return {pokemons, error, loading}
+  return { pokemons, error, loading };
 }
 
 export default usePokemons

@@ -1,5 +1,5 @@
 import { Flex, Tooltip, Image } from 'antd'
-import { PokemonType } from '../hooks/usePokemons'
+import { PokemonTypeResource } from '../hooks/usePokemons'
 import bug from '../assets/bug.svg'
 import dark from '../assets/dark.svg'
 import dragon from '../assets/dragon.svg'
@@ -20,7 +20,7 @@ import steel from '../assets/steel.svg'
 import water from '../assets/water.svg'
 
 interface Props {
-  types: PokemonType[]
+  types: PokemonTypeResource[]
 }
 
 const iconMap: { [key: string]: string } = {
@@ -49,6 +49,7 @@ const PokemonTypeIconList = ({ types }: Props) => {
     <Flex wrap='wrap' gap='middle'>
       {types.map(({ type }) => (
         <Tooltip
+          key={type.name}
           placement='bottom'
           title={type.name[0].toUpperCase() + type.name.substring(1)}>
           <Image preview={false} width={30} src={iconMap[type.name]} />
