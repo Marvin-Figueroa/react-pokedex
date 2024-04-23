@@ -43,6 +43,7 @@ function App() {
             }}>
             <PokemonTypeList
               onSelectType={(type) => setSelectedPokemonType(type)}
+              selectedType={selectedPokemonType}
             />
           </Sider>
           <Content style={{ padding: '20px' }}>

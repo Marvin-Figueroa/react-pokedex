@@ -4,9 +4,10 @@ import { PokemonType } from '../hooks/usePokemons'
 
 interface Props {
   onSelectType: (type: PokemonType) => void
+  selectedType: PokemonType | null
 }
 
-const PokemonTypeList = ({ onSelectType }: Props) => {
+const PokemonTypeList = ({ onSelectType, selectedType }: Props) => {
   return (
     <List
       itemLayout='horizontal'
@@ -24,7 +25,13 @@ const PokemonTypeList = ({ onSelectType }: Props) => {
               <Button
                 onClick={() => onSelectType(item)}
                 type='link'
-                style={{ paddingTop: '8px' }}>
+                style={{
+                  paddingTop: '8px',
+                  color: 'orange',
+                  fontWeight: `${
+                    selectedType?.id === item.id ? 'bolder' : 'normal'
+                  }`
+                }}>
                 {item.name[0].toUpperCase() + item.name.substring(1)}
               </Button>
             }
